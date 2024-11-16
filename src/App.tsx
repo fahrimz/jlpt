@@ -11,8 +11,8 @@ import { useMemo, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import audioCorrect from './assets/audio/correct.mp4';
-import audioIncorrect from './assets/audio/incorrect.mp4';
+import audioCorrect from "./assets/audio/correct.mp4";
+import audioIncorrect from "./assets/audio/incorrect.mp4";
 
 const audioCorrectAnswer = new Audio(audioCorrect);
 const audioIncorrectAnswer = new Audio(audioIncorrect);
@@ -26,7 +26,7 @@ const QuizView = ({
   answers,
   checkAnswer,
 }: {
-  questionIndex: number,
+  questionIndex: number;
   currentQuestion: TWord;
   answers: string[];
   checkAnswer: (option: string) => void;
@@ -46,9 +46,9 @@ const QuizView = ({
         ))}
       </div>
 
-      <h6>
+      <p>
         {questionIndex + 1} / {questions.length}
-      </h6>
+      </p>
     </div>
   );
 };
@@ -62,8 +62,8 @@ const QuizCompletedView = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h1>Quiz completed!</h1>
-      <h2>Correct answers: {correctAnswers}</h2>
+      <h4 className="font-bold text-3xl">Quiz completed!</h4>
+      <p>Correct answers: {correctAnswers}</p>
       <button onClick={onRetry}>Retry</button>
     </div>
   );
@@ -109,9 +109,7 @@ function App() {
     <>
       <div className="flex flex-col gap-32 ">
         <div className="flex gap-2 justify-center">
-          <h5 className="font-bold text-xl">
-            JLPT N5 Vocab
-          </h5>
+          <h1 className="font-bold text-xl">JLPT N5 Vocab</h1>
         </div>
         {currentQuestion && answers ? (
           <QuizView
