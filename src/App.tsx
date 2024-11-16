@@ -32,9 +32,9 @@ const QuizView = ({
   checkAnswer: (option: string) => void;
 }) => {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 justify-center">
       <h1>{currentQuestion.english}</h1>
-      <div className="flex gap-4 flex-col sm:flex-row">
+      <div className="flex gap-4 flex-col sm:flex-row sm:justify-center">
         {answers.map((option) => (
           <OptionButton
             key={option}
@@ -107,7 +107,7 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col gap-32">
+      <div className="flex flex-col gap-32 ">
         <div className="flex gap-2 justify-center">
           <h5 className="font-bold text-xl">
             JLPT N5 Vocab
