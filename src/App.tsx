@@ -110,7 +110,7 @@ function App() {
       <div className="flex flex-col gap-32">
         <div className="flex gap-2 justify-center">
           <h5 className="font-bold text-xl">
-            JLPT N5 Verbs
+            JLPT N5 Vocab
           </h5>
         </div>
         {currentQuestion && answers ? (
