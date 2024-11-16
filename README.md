@@ -4,6 +4,7 @@ Simple website for quizzing your japanese dictionary
 
 ## Development
 > bun install
+
 > bun dev
 
 ## Deployment
