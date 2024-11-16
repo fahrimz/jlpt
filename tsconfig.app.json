@@ -23,9 +23,11 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": "./",
     "paths": {
-      "@app/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@pages/*": ["./src/pages/*"]
+      "@app": ["./src"],
+      "@components": ["./src/components"],
+      "@pages": ["./src/pages"],
+      "@data": ["./src/data"],
+      "@utility": ["./src/utility"]
     }
   },
   "include": ["src"]
