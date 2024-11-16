@@ -16,17 +16,19 @@ const audioIncorrectAnswer = new Audio("src/assets/audio/incorrect.mp4");
 const questions = getRandomItems(n5Dictionary, 5);
 
 const QuizView = ({
-  currentItem,
+  questionIndex,
+  currentQuestion,
   answers,
   checkAnswer,
 }: {
-  currentItem: TWord;
+  questionIndex: number,
+  currentQuestion: TWord;
   answers: string[];
   checkAnswer: (option: string) => void;
 }) => {
   return (
     <div className="flex flex-col gap-8">
-      <h1>{currentItem.english}</h1>
+      <h1>{currentQuestion.english}</h1>
       <div className="space-x-4">
         {answers.map((option) => (
           <OptionButton
@@ -38,6 +40,10 @@ const QuizView = ({
           />
         ))}
       </div>
+
+      <h6>
+        {questionIndex + 1} / {questions.length}
+      </h6>
     </div>
   );
 };
@@ -59,17 +65,17 @@ const QuizCompletedView = ({
 };
 
 function App() {
-  const [currentItem, setCurrentItem] = useState<TWord>(questions[0]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
-
-  const currentItemIndex = useMemo(
-    () => questions.indexOf(currentItem),
-    [currentItem]
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const currentQuestion = useMemo(
+    () => (questionIndex < questions.length ? questions[questionIndex] : null),
+    [questionIndex]
   );
 
   const answers = useMemo(
-    () => getAnswerOptions(currentItem, n5Dictionary),
-    [currentItem]
+    () =>
+      currentQuestion ? getAnswerOptions(currentQuestion, n5Dictionary) : null,
+    [currentQuestion]
   );
 
   const onRetry = () => {
@@ -77,7 +83,11 @@ function App() {
   };
 
   const checkAnswer = async (option: string) => {
-    if (option === getShownJapanese(currentItem)) {
+    if (!currentQuestion) {
+      return;
+    }
+
+    if (option === getShownJapanese(currentQuestion)) {
       setCorrectAnswers(correctAnswers + 1);
       void audioCorrectAnswer.play();
       toast.success("Answer correct!");
@@ -87,9 +97,7 @@ function App() {
     }
 
     await sleep(1000);
-    if (currentItemIndex < questions.length - 1) {
-      setCurrentItem(questions[currentItemIndex + 1]);
-    }
+    setQuestionIndex((prev) => prev + 1);
   };
 
   return (
@@ -97,13 +105,13 @@ function App() {
       <div className="flex flex-col gap-32">
         <div className="flex gap-2 justify-center">
           <h5 className="font-bold text-xl">
-            {/* {currentItemIndex + 1} / {questions.length} */}
             JLPT N5 Verbs
           </h5>
         </div>
-        {currentItemIndex <= answers.length ? (
+        {currentQuestion && answers ? (
           <QuizView
-            currentItem={currentItem}
+            questionIndex={questionIndex}
+            currentQuestion={currentQuestion}
             answers={answers}
             checkAnswer={(option) => {
               void checkAnswer(option);
@@ -116,7 +124,12 @@ function App() {
           />
         )}
       </div>
-      <ToastContainer position="bottom-right" theme="dark" closeOnClick autoClose={1000} />
+      <ToastContainer
+        position="bottom-right"
+        theme="dark"
+        closeOnClick
+        autoClose={1000}
+      />
     </>
   );
 }
