@@ -34,7 +34,7 @@ const QuizView = ({
   return (
     <div className="flex flex-col gap-8">
       <h1>{currentQuestion.english}</h1>
-      <div className="space-x-4">
+      <div className="flex gap-4 flex-col sm:flex-row">
         {answers.map((option) => (
           <OptionButton
             key={option}
