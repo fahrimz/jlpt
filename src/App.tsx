@@ -13,7 +13,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 const audioCorrectAnswer = new Audio("src/assets/audio/correct.mp4");
 const audioIncorrectAnswer = new Audio("src/assets/audio/incorrect.mp4");
-const questions = getRandomItems(n5Dictionary, 5);
+
+const TOTAL_QUESTION = 10;
+const questions = getRandomItems(n5Dictionary, TOTAL_QUESTION);
 
 const QuizView = ({
   questionIndex,
