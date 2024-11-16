@@ -11,8 +11,11 @@ import { useMemo, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const audioCorrectAnswer = new Audio("src/assets/audio/correct.mp4");
-const audioIncorrectAnswer = new Audio("src/assets/audio/incorrect.mp4");
+import audioCorrect from './assets/audio/correct.mp4';
+import audioIncorrect from './assets/audio/incorrect.mp4';
+
+const audioCorrectAnswer = new Audio(audioCorrect);
+const audioIncorrectAnswer = new Audio(audioIncorrect);
 
 const TOTAL_QUESTION = 10;
 const questions = getRandomItems(n5Dictionary, TOTAL_QUESTION);

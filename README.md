@@ -1,3 +1,16 @@
+# JLPT
+
+Simple website for quizzing your japanese dictionary
+
+## Development
+> bun install
+> bun dev
+
+## Deployment
+> bun run deploy
+
+### Template README
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
