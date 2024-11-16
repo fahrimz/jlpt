@@ -8,6 +8,8 @@ import {
 } from "@utility";
 import { n5Dictionary, TWord } from "@data";
 import { useMemo, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const audioCorrectAnswer = new Audio("src/assets/audio/correct.mp4");
 const audioIncorrectAnswer = new Audio("src/assets/audio/incorrect.mp4");
@@ -77,9 +79,11 @@ function App() {
   const checkAnswer = async (option: string) => {
     if (option === getShownJapanese(currentItem)) {
       setCorrectAnswers(correctAnswers + 1);
-      await audioCorrectAnswer.play();
+      void audioCorrectAnswer.play();
+      toast.success("Answer correct!");
     } else {
       void audioIncorrectAnswer.play();
+      toast.error("Answer incorrect!");
     }
 
     await sleep(1000);
@@ -89,24 +93,31 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col gap-32">
-      <div className="flex gap-2 justify-center">
-        <h5 className="font-bold text-xl">
-          {currentItemIndex + 1} / {questions.length}
-        </h5>
+    <>
+      <div className="flex flex-col gap-32">
+        <div className="flex gap-2 justify-center">
+          <h5 className="font-bold text-xl">
+            {/* {currentItemIndex + 1} / {questions.length} */}
+            JLPT N5 Verbs
+          </h5>
+        </div>
+        {currentItemIndex <= answers.length ? (
+          <QuizView
+            currentItem={currentItem}
+            answers={answers}
+            checkAnswer={(option) => {
+              void checkAnswer(option);
+            }}
+          />
+        ) : (
+          <QuizCompletedView
+            correctAnswers={correctAnswers}
+            onRetry={onRetry}
+          />
+        )}
       </div>
-      {currentItemIndex <= answers.length ? (
-        <QuizView
-          currentItem={currentItem}
-          answers={answers}
-          checkAnswer={(option) => {
-            void checkAnswer(option);
-          }}
-        />
-      ) : (
-        <QuizCompletedView correctAnswers={correctAnswers} onRetry={onRetry} />
-      )}
-    </div>
+      <ToastContainer position="bottom-right" theme="dark" closeOnClick autoClose={1000} />
+    </>
   );
 }
 
