@@ -1,0 +1,1 @@
+import{c as o,j as e}from"./index-BZMttu-t.js";import{Q as t}from"./QuizPage-DlQhBEDK.js";import"./constants-nVhN3Wzh.js";const u=o("/n5quizBookmark")({component:r});function r(){return e.jsx(t,{quizType:"n5Bookmark",preferredTotalQuestions:10})}export{u as Route};
