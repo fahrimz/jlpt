@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [TanStackRouterVite(), react()],
   resolve: {
     alias: {
       "@app": path.resolve(__dirname, "./src"),
@@ -14,5 +15,5 @@ export default defineConfig({
       "@utility": path.resolve(__dirname, "./src/utility"),
     },
   },
-  base: "/jlpt/",
+  base: "/jlpt",
 });

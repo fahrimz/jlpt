@@ -4,7 +4,6 @@ import {
   getAnswerOptions,
   getRandomItems,
   getShownJapanese,
-  Links,
   sleep,
   Storage,
 } from "@utility";
@@ -15,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import audioCorrect from "../assets/audio/correct.mp4";
 import audioIncorrect from "../assets/audio/incorrect.mp4";
+import { Link } from "@tanstack/react-router";
 
 type TQuizType = "n5" | "n5Bookmark";
 
@@ -193,7 +193,7 @@ export function QuizPage({
           <p>Quiz not available.</p>
           {quizType === "n5Bookmark" && (
             <p>
-              Bookmark some words from <a href={Links.n5VocabQuiz}>this quiz</a>{" "}
+              Bookmark some words from <Link to="/n5quiz">this quiz</Link>{" "}
               to start the quiz
             </p>
           )}
