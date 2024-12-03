@@ -8,7 +8,7 @@ import {
   Storage,
 } from "@utility";
 import { n5BookmarkDictionary, n5Dictionary, TWord } from "@data";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -37,23 +37,30 @@ const BookmarkView = ({
     Storage.isN5WordBookmarked(currentQuestion.id)
   );
 
+  const toggleBookmark = () => {
+    Storage.toggleN5DictBookmark(currentQuestion.id);
+    setBookmarked((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const isBookmarked = Storage.isN5WordBookmarked(currentQuestion.id);
+    setBookmarked(isBookmarked);
+  }, [currentQuestion.id]);
+
   if (quizType === "n5") {
     if (bookmarked) {
       return (
-        <button className="self-center text-sm disabled:opacity-70" disabled>
+        <button
+          className="self-center text-sm disabled:opacity-70"
+          onClick={toggleBookmark}
+        >
           Bookmarked ✔️
         </button>
       );
     }
 
     return (
-      <button
-        className="self-center text-sm"
-        onClick={() => {
-          Storage.toggleN5DictBookmark(currentQuestion.id);
-          setBookmarked(true);
-        }}
-      >
+      <button className="self-center text-sm" onClick={toggleBookmark}>
         Bookmark this word
       </button>
     );
@@ -62,13 +69,7 @@ const BookmarkView = ({
   // if (quizType === "n5Bookmark") {
   if (bookmarked) {
     return (
-      <button
-        className="self-center text-sm"
-        onClick={() => {
-          Storage.toggleN5DictBookmark(currentQuestion.id);
-          setBookmarked(false);
-        }}
-      >
+      <button className="self-center text-sm" onClick={toggleBookmark}>
         Remove bookmark
       </button>
     );
@@ -193,8 +194,8 @@ export function QuizPage({
           <p>Quiz not available.</p>
           {quizType === "n5Bookmark" && (
             <p>
-              Bookmark some words from <Link to="/n5quiz">this quiz</Link>{" "}
-              to start the quiz
+              Bookmark some words from <Link to="/n5quiz">this quiz</Link> to
+              start the quiz
             </p>
           )}
         </div>
