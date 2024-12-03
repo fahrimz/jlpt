@@ -127,7 +127,11 @@ const QuizCompletedView = ({
     <div className="space-y-4">
       <h4 className="font-bold text-3xl">Quiz completed!</h4>
       <p>Correct answers: {correctAnswers}</p>
-      <button onClick={onRetry}>Retry</button>
+      <div className="flex flex-col gap-4">
+        <Link onClick={onRetry} className="self-center">Retry</Link>
+        <span>or</span>
+        <Link to="/">Go back to Home</Link>
+      </div>
     </div>
   );
 };
@@ -228,7 +232,7 @@ export function QuizPage({
     <>
       <div className="flex flex-col gap-32 ">
         <div className="flex gap-2 justify-center">
-          <h1 className="font-bold text-xl">JLPT N5 Vocab</h1>
+          <Link to="/"><h1 className="font-bold text-xl">JLPT N5 Vocab</h1></Link>
         </div>
         {renderBody()}
       </div>
