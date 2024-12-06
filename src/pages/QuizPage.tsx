@@ -1,4 +1,4 @@
-import { OptionButton } from "@components";
+import { OptionButton, Stopwatch } from "@components";
 import {
   Constants,
   getAnswerOptions,
@@ -8,13 +8,14 @@ import {
   Storage,
 } from "@utility";
 import { n5BookmarkDictionary, n5Dictionary, TWord } from "@data";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import audioCorrect from "../assets/audio/correct.mp4";
 import audioIncorrect from "../assets/audio/incorrect.mp4";
 import { Link } from "@tanstack/react-router";
+import { StopwatchImperativeHandle } from "src/components/Stopwatch";
 
 type TQuizType = "n5" | "n5Bookmark";
 
@@ -119,16 +120,55 @@ const QuizView = ({
 const QuizCompletedView = ({
   correctAnswers,
   onRetry,
+  timeTakenArray,
 }: {
   correctAnswers: number;
   onRetry: () => void;
+  timeTakenArray: number[];
 }) => {
+  const totalTimeTaken = timeTakenArray.reduce((acc, curr) => acc + curr, 0);
+
+  const statistics = [
+    {
+      label: "Correct Answers",
+      value: correctAnswers,
+    },
+    {
+      label: "Total Time Taken",
+      value: `${totalTimeTaken.toString()} seconds`,
+    },
+    {
+      label: "Longest Time to Answer",
+      value: `${Math.max(...timeTakenArray).toString()} seconds`,
+    },
+    {
+      label: "Shortest Time to Answer",
+      value: `${Math.min(...timeTakenArray).toString()} seconds`,
+    }
+  ];
+
   return (
     <div className="space-y-4">
       <h4 className="font-bold text-3xl">Quiz completed!</h4>
-      <p>Correct answers: {correctAnswers}</p>
+      <table className="border-collapse border border-slate-500">
+        <tbody>
+          {statistics.map((stat, key) => (
+            <tr key={key}>
+              <td className="border border-slate-600 p-4 text-left">
+                {stat.label}
+              </td>
+              <td className="border border-slate-600 p-4 text-right">
+                {stat.value}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <hr />
       <div className="flex flex-col gap-4">
-        <Link onClick={onRetry} className="self-center">Retry</Link>
+        <Link onClick={onRetry} className="self-center">
+          Retry
+        </Link>
         <span>or</span>
         <Link to="/">Go back to Home</Link>
       </div>
@@ -169,6 +209,9 @@ export function QuizPage({
     [answerBank, currentQuestion]
   );
 
+  const stopwatchRef = useRef<StopwatchImperativeHandle>(null);
+  const timeTakenArray = useRef<number[]>([]);
+
   const onRetry = () => {
     window.location.reload();
   };
@@ -177,6 +220,9 @@ export function QuizPage({
     if (!currentQuestion) {
       return;
     }
+
+    // record time taken to choose an answer
+    timeTakenArray.current.push(stopwatchRef.current?.getTime() ?? 0);
 
     if (option === getShownJapanese(currentQuestion)) {
       setCorrectAnswers(correctAnswers + 1);
@@ -189,6 +235,7 @@ export function QuizPage({
 
     await sleep(1000);
     setQuestionIndex((prev) => prev + 1);
+    stopwatchRef.current?.reset();
   };
 
   const renderBody = () => {
@@ -208,36 +255,57 @@ export function QuizPage({
 
     if (currentQuestion && answers) {
       return (
-        <QuizView
-          quizType={quizType}
-          questionIndex={questionIndex}
-          currentQuestion={currentQuestion}
-          totalQuestions={totalQuestions}
-          answers={answers}
-          checkAnswer={(option) => {
-            void checkAnswer(option);
-          }}
-        />
+        <>
+          <QuizView
+            quizType={quizType}
+            questionIndex={questionIndex}
+            currentQuestion={currentQuestion}
+            totalQuestions={totalQuestions}
+            answers={answers}
+            checkAnswer={(option) => {
+              void checkAnswer(option);
+            }}
+          />
+          <Stopwatch ref={stopwatchRef} />
+        </>
       );
     }
 
     if (questionIndex >= totalQuestions) {
       return (
-        <QuizCompletedView correctAnswers={correctAnswers} onRetry={onRetry} />
+        <QuizCompletedView
+          correctAnswers={correctAnswers}
+          onRetry={onRetry}
+          timeTakenArray={timeTakenArray.current}
+        />
       );
     }
   };
+
+  useEffect(() => {
+    const ref = stopwatchRef.current;
+
+    if (currentQuestion) {
+      ref?.start();
+    }
+
+    return () => {
+      ref?.stop();
+    };
+  });
 
   return (
     <>
       <div className="flex flex-col gap-32 ">
         <div className="flex gap-2 justify-center">
-          <Link to="/"><h1 className="font-bold text-xl">JLPT N5 Vocab</h1></Link>
+          <Link to="/">
+            <h1 className="font-bold text-xl">JLPT N5 Vocab</h1>
+          </Link>
         </div>
         {renderBody()}
       </div>
       <ToastContainer
-        position="bottom-right"
+        position="bottom-center"
         theme="dark"
         closeOnClick
         autoClose={1000}

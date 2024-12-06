@@ -1,3 +1,4 @@
 import { OptionButton } from "./OptionButton";
+import { Stopwatch } from "./Stopwatch";
 
-export { OptionButton };
+export { OptionButton, Stopwatch };
