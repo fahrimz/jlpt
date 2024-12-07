@@ -1,1 +1,0 @@
-import{c as o,j as e}from"./index-ByMcUcDr.js";import{Q as t}from"./QuizPage-DfVrXH_K.js";import"./clsx-B9dzDlr9.js";const p=o("/n5quiz")({component:r});function r(){return e.jsx(t,{quizType:"n5",preferredTotalQuestions:10})}export{p as Route};
