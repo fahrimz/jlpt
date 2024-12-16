@@ -7,7 +7,12 @@ import {
   sleep,
   Storage,
 } from "@utility";
-import { n5BookmarkDictionary, n5Dictionary, TWord } from "@data";
+import {
+  n5BookmarkDictionary,
+  n5Dictionary,
+  ScoreboardItem,
+  TWord,
+} from "@data";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -126,26 +131,41 @@ const QuizCompletedView = ({
   onRetry: () => void;
   timeTakenArray: number[];
 }) => {
-  const totalTimeTaken = timeTakenArray.reduce((acc, curr) => acc + curr, 0);
+  const scoreboard: ScoreboardItem = useMemo(
+    () => ({
+      createdAt: new Date().toISOString(),
+      correctAnswers,
+      totalTimeTaken: timeTakenArray.reduce((acc, curr) => acc + curr, 0),
+      longestTimeToAnswer: Math.max(...timeTakenArray),
+      shortestTimeToAnswer: Math.min(...timeTakenArray),
+    }),
+    [correctAnswers, timeTakenArray]
+  );
 
   const statistics = [
     {
       label: "Correct Answers",
-      value: correctAnswers,
+      value: scoreboard.correctAnswers,
     },
     {
       label: "Total Time Taken",
-      value: `${totalTimeTaken.toString()} seconds`,
+      value: `${scoreboard.totalTimeTaken.toString()} seconds`,
     },
     {
       label: "Longest Time to Answer",
-      value: `${Math.max(...timeTakenArray).toString()} seconds`,
+      value: `${scoreboard.longestTimeToAnswer.toString()} seconds`,
     },
     {
       label: "Shortest Time to Answer",
-      value: `${Math.min(...timeTakenArray).toString()} seconds`,
-    }
+      value: `${scoreboard.shortestTimeToAnswer.toString()} seconds`,
+    },
   ];
+
+  // save scoreboard to local storage only once
+  useEffect(() => {
+    Storage.addScoreboard(scoreboard);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -165,13 +185,15 @@ const QuizCompletedView = ({
         </tbody>
       </table>
       <hr />
-      <div className="flex flex-col gap-4">
+      <p>
         <Link onClick={onRetry} className="self-center">
           Retry
         </Link>
-        <span>or</span>
+        <span>, </span>
         <Link to="/">Go back to Home</Link>
-      </div>
+        <span> or </span>
+        <Link to="/scoreboard">View Scoreboard</Link>
+      </p>
     </div>
   );
 };

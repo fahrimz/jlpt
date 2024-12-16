@@ -16,11 +16,18 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
+const ScoreboardLazyImport = createFileRoute('/scoreboard')()
 const N5quizBookmarkLazyImport = createFileRoute('/n5quizBookmark')()
 const N5quizLazyImport = createFileRoute('/n5quiz')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
+
+const ScoreboardLazyRoute = ScoreboardLazyImport.update({
+  id: '/scoreboard',
+  path: '/scoreboard',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/scoreboard.lazy').then((d) => d.Route))
 
 const N5quizBookmarkLazyRoute = N5quizBookmarkLazyImport.update({
   id: '/n5quizBookmark',
@@ -67,6 +74,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof N5quizBookmarkLazyImport
       parentRoute: typeof rootRoute
     }
+    '/scoreboard': {
+      id: '/scoreboard'
+      path: '/scoreboard'
+      fullPath: '/scoreboard'
+      preLoaderRoute: typeof ScoreboardLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -76,12 +90,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/n5quiz': typeof N5quizLazyRoute
   '/n5quizBookmark': typeof N5quizBookmarkLazyRoute
+  '/scoreboard': typeof ScoreboardLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/n5quiz': typeof N5quizLazyRoute
   '/n5quizBookmark': typeof N5quizBookmarkLazyRoute
+  '/scoreboard': typeof ScoreboardLazyRoute
 }
 
 export interface FileRoutesById {
@@ -89,14 +105,15 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/n5quiz': typeof N5quizLazyRoute
   '/n5quizBookmark': typeof N5quizBookmarkLazyRoute
+  '/scoreboard': typeof ScoreboardLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/n5quiz' | '/n5quizBookmark'
+  fullPaths: '/' | '/n5quiz' | '/n5quizBookmark' | '/scoreboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/n5quiz' | '/n5quizBookmark'
-  id: '__root__' | '/' | '/n5quiz' | '/n5quizBookmark'
+  to: '/' | '/n5quiz' | '/n5quizBookmark' | '/scoreboard'
+  id: '__root__' | '/' | '/n5quiz' | '/n5quizBookmark' | '/scoreboard'
   fileRoutesById: FileRoutesById
 }
 
@@ -104,12 +121,14 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   N5quizLazyRoute: typeof N5quizLazyRoute
   N5quizBookmarkLazyRoute: typeof N5quizBookmarkLazyRoute
+  ScoreboardLazyRoute: typeof ScoreboardLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   N5quizLazyRoute: N5quizLazyRoute,
   N5quizBookmarkLazyRoute: N5quizBookmarkLazyRoute,
+  ScoreboardLazyRoute: ScoreboardLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -124,7 +143,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/n5quiz",
-        "/n5quizBookmark"
+        "/n5quizBookmark",
+        "/scoreboard"
       ]
     },
     "/": {
@@ -135,6 +155,9 @@ export const routeTree = rootRoute
     },
     "/n5quizBookmark": {
       "filePath": "n5quizBookmark.lazy.tsx"
+    },
+    "/scoreboard": {
+      "filePath": "scoreboard.lazy.tsx"
     }
   }
 }

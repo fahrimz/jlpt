@@ -27,6 +27,10 @@ const menu: MenuCardProps[] = [
     title: "JLPT N5 Vocabs Quiz (Bookmark only)",
     link: '/n5quizBookmark',
   },
+  {
+    title: "Scoreboard",
+    link: '/scoreboard',
+  }
 ];
 
 function Index() {
