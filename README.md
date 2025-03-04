@@ -3,12 +3,12 @@
 Simple website for quizzing your japanese dictionary
 
 ## Development
-> bun install
+> pnpm install
 
-> bun dev
+> pnpm dev
 
 ## Deployment
-> bun run deploy
+> pnpm run deploy
 
 ## Creating new page
 
@@ -29,5 +29,5 @@ function RouteComponent() {
 ```
 
 After that, run the development server
-> bun dev
+> pnpm dev
 
