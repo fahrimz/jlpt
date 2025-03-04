@@ -164,7 +164,7 @@ const QuizCompletedView = ({
   // save scoreboard to local storage only once
   useEffect(() => {
     Storage.addScoreboard(scoreboard);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -186,7 +186,7 @@ const QuizCompletedView = ({
       </table>
       <hr />
       <p>
-        <Link onClick={onRetry} className="self-center">
+        <Link onClick={onRetry} className="self-center" to=".">
           Retry
         </Link>
         <span>, </span>
