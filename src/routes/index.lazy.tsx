@@ -13,7 +13,7 @@ interface MenuCardProps {
 const MenuCard = ({ title, link }: MenuCardProps) => {
   return (
     <Link to={link}>
-      <button className="size-48 text-lg">{title}</button>
+      <button className="size-40 md:size-48 text-lg">{title}</button>
     </Link>
   );
 };
@@ -39,8 +39,8 @@ function Index() {
       <h1>Learn Japanese</h1>
       <div
         className={clsx(
-          "grid gap-4",
-          menu.length >= 3 ? "grid-cols-3" : "grid-cols-2"
+          "grid gap-4 grid-cols-2",
+          menu.length >= 3 ? "md:grid-cols-3" : "md:grid-cols-2"
         )}
       >
         {menu.map((item, idx) => (
