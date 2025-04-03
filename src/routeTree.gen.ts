@@ -19,6 +19,8 @@ import { Route as rootRoute } from './routes/__root'
 const ScoreboardLazyImport = createFileRoute('/scoreboard')()
 const N5quizBookmarkLazyImport = createFileRoute('/n5quizBookmark')()
 const N5quizLazyImport = createFileRoute('/n5quiz')()
+const KatakanaLazyImport = createFileRoute('/katakana')()
+const HiraganaLazyImport = createFileRoute('/hiragana')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
@@ -43,6 +45,18 @@ const N5quizLazyRoute = N5quizLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/n5quiz.lazy').then((d) => d.Route))
 
+const KatakanaLazyRoute = KatakanaLazyImport.update({
+  id: '/katakana',
+  path: '/katakana',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/katakana.lazy').then((d) => d.Route))
+
+const HiraganaLazyRoute = HiraganaLazyImport.update({
+  id: '/hiragana',
+  path: '/hiragana',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/hiragana.lazy').then((d) => d.Route))
+
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
@@ -58,6 +72,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/hiragana': {
+      id: '/hiragana'
+      path: '/hiragana'
+      fullPath: '/hiragana'
+      preLoaderRoute: typeof HiraganaLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/katakana': {
+      id: '/katakana'
+      path: '/katakana'
+      fullPath: '/katakana'
+      preLoaderRoute: typeof KatakanaLazyImport
       parentRoute: typeof rootRoute
     }
     '/n5quiz': {
@@ -88,6 +116,8 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/hiragana': typeof HiraganaLazyRoute
+  '/katakana': typeof KatakanaLazyRoute
   '/n5quiz': typeof N5quizLazyRoute
   '/n5quizBookmark': typeof N5quizBookmarkLazyRoute
   '/scoreboard': typeof ScoreboardLazyRoute
@@ -95,6 +125,8 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/hiragana': typeof HiraganaLazyRoute
+  '/katakana': typeof KatakanaLazyRoute
   '/n5quiz': typeof N5quizLazyRoute
   '/n5quizBookmark': typeof N5quizBookmarkLazyRoute
   '/scoreboard': typeof ScoreboardLazyRoute
@@ -103,6 +135,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/hiragana': typeof HiraganaLazyRoute
+  '/katakana': typeof KatakanaLazyRoute
   '/n5quiz': typeof N5quizLazyRoute
   '/n5quizBookmark': typeof N5quizBookmarkLazyRoute
   '/scoreboard': typeof ScoreboardLazyRoute
@@ -110,15 +144,36 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/n5quiz' | '/n5quizBookmark' | '/scoreboard'
+  fullPaths:
+    | '/'
+    | '/hiragana'
+    | '/katakana'
+    | '/n5quiz'
+    | '/n5quizBookmark'
+    | '/scoreboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/n5quiz' | '/n5quizBookmark' | '/scoreboard'
-  id: '__root__' | '/' | '/n5quiz' | '/n5quizBookmark' | '/scoreboard'
+  to:
+    | '/'
+    | '/hiragana'
+    | '/katakana'
+    | '/n5quiz'
+    | '/n5quizBookmark'
+    | '/scoreboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/hiragana'
+    | '/katakana'
+    | '/n5quiz'
+    | '/n5quizBookmark'
+    | '/scoreboard'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  HiraganaLazyRoute: typeof HiraganaLazyRoute
+  KatakanaLazyRoute: typeof KatakanaLazyRoute
   N5quizLazyRoute: typeof N5quizLazyRoute
   N5quizBookmarkLazyRoute: typeof N5quizBookmarkLazyRoute
   ScoreboardLazyRoute: typeof ScoreboardLazyRoute
@@ -126,6 +181,8 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  HiraganaLazyRoute: HiraganaLazyRoute,
+  KatakanaLazyRoute: KatakanaLazyRoute,
   N5quizLazyRoute: N5quizLazyRoute,
   N5quizBookmarkLazyRoute: N5quizBookmarkLazyRoute,
   ScoreboardLazyRoute: ScoreboardLazyRoute,
@@ -142,6 +199,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/hiragana",
+        "/katakana",
         "/n5quiz",
         "/n5quizBookmark",
         "/scoreboard"
@@ -149,6 +208,12 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/hiragana": {
+      "filePath": "hiragana.lazy.tsx"
+    },
+    "/katakana": {
+      "filePath": "katakana.lazy.tsx"
     },
     "/n5quiz": {
       "filePath": "n5quiz.lazy.tsx"

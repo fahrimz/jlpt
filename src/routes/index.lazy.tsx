@@ -20,16 +20,23 @@ const MenuCard = ({ title, link }: MenuCardProps) => {
 
 const menu: MenuCardProps[] = [
   {
-    title: "JLPT N5 Vocabs Quiz",
+    title: "N5 Vocabs Quiz",
     link: '/n5quiz',
   },
   {
-    title: "JLPT N5 Vocabs Quiz (Bookmark only)",
+    title: "N5 Vocabs Quiz (Bookmark only)",
     link: '/n5quizBookmark',
   },
   {
     title: "Scoreboard",
     link: '/scoreboard',
+  }, {
+    title: "Hiragana",
+    link: "/hiragana",
+  },
+  {
+    title: "Katakana",
+    link: "/katakana"
   }
 ];
 

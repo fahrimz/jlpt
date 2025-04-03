@@ -8,8 +8,6 @@ import {
   Storage,
 } from "@utility";
 import {
-  n5BookmarkDictionary,
-  n5Dictionary,
   ScoreboardItem,
   TWord,
 } from "@data";
@@ -22,15 +20,10 @@ import audioIncorrect from "../assets/audio/incorrect.mp4";
 import { Link } from "@tanstack/react-router";
 import { StopwatchImperativeHandle } from "src/components/Stopwatch";
 
-type TQuizType = "n5" | "n5Bookmark";
+type TQuizType = "n5" | "n5Bookmark" | "hiragana" | "katakana";
 
 const audioCorrectAnswer = new Audio(audioCorrect);
 const audioIncorrectAnswer = new Audio(audioIncorrect);
-
-const questionsBank = {
-  n5: n5Dictionary,
-  n5Bookmark: n5BookmarkDictionary(),
-};
 
 const BookmarkView = ({
   currentQuestion,
@@ -201,22 +194,22 @@ const QuizCompletedView = ({
 interface QuizPageProps {
   quizType: TQuizType;
   preferredTotalQuestions: number;
+  questionBank: TWord[];
+  answerBank: TWord[];
+  title: string;
 }
 
 export function QuizPage({
   quizType = "n5",
   preferredTotalQuestions = Constants.defaultTotalQuestion,
+  questionBank,
+  answerBank,
+  title
 }: QuizPageProps) {
-  const bank = questionsBank[quizType];
-  const answerBank = useMemo(
-    () => (["n5", "n5Bookmark"].includes(quizType) ? n5Dictionary : []),
-    [quizType]
-  );
-  const totalQuestions = Math.min(preferredTotalQuestions, bank.length);
-
+  const totalQuestions = Math.min(preferredTotalQuestions, questionBank.length);
   const questions = useMemo(
-    () => getRandomItems(bank, totalQuestions),
-    [bank, totalQuestions]
+    () => getRandomItems(questionBank, totalQuestions),
+    [questionBank, totalQuestions]
   );
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -261,7 +254,7 @@ export function QuizPage({
   };
 
   const renderBody = () => {
-    if (bank.length === 0) {
+    if (questionBank.length === 0) {
       return (
         <div>
           <p>Quiz not available.</p>
@@ -321,7 +314,7 @@ export function QuizPage({
       <div className="flex flex-col gap-32 ">
         <div className="flex gap-2 justify-center">
           <Link to="/">
-            <h1 className="font-bold text-xl">JLPT N5 Vocab</h1>
+            <h1 className="font-bold text-xl">{title}</h1>
           </Link>
         </div>
         {renderBody()}
