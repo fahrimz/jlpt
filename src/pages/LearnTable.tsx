@@ -1,18 +1,15 @@
 import { TWord } from "@data";
-import clsx from "clsx";
 
 interface LearnTableProps {
     title: string;
     data: TWord[];
-    cols: number;
 };
 
-export const LearnTable = ({title, data, cols}: LearnTableProps) => {
-    const gridCols = "grid-cols-".concat(cols.toString());
+export const LearnTable = ({title, data}: LearnTableProps) => {
     return (
         <div className="flex flex-col gap-8">
             <h1>{title}</h1>
-            <div className={clsx("grid", gridCols)}>
+            <div className="grid grid-cols-5">
                 {data.map((item, key) => (
                     <div key={key} className="border px-6 py-2 flex flex-col justify-center items-center">
                         <span>

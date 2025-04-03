@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 
 export const ScoreboardPage = () => {
   const [scoreboard, setScoreboard] = useState<ScoreboardItem[]>([]);
+  const sortedScoreboard = scoreboard.sort((a, b) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 
   /**
    * TODO: calculate and check the fastest and highest score to answer
@@ -29,8 +32,8 @@ export const ScoreboardPage = () => {
           </tr>
         </thead>
         <tbody>
-          {scoreboard.length > 0 ? (
-            scoreboard.map((item, key) => (
+          {sortedScoreboard.length > 0 ? (
+            sortedScoreboard.map((item, key) => (
               <tr key={key}>
                 <td className="border p-4">
                   {new Date(item.createdAt).toLocaleString()}

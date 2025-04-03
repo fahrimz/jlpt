@@ -21,7 +21,7 @@ function RouteComponent() {
         </div>
         {
           tab === 'learn' 
-            ? <LearnTable title='Katakana' data={questionBank} cols={5} /> 
+            ? <LearnTable title='Katakana' data={questionBank} /> 
             : <QuizPage title='Katakana' quizType="katakana" questionBank={questionBank} answerBank={answerBank} preferredTotalQuestions={10} />
         }
       </div>
