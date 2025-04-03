@@ -9,6 +9,7 @@ import {
 } from "@utility";
 import {
   ScoreboardItem,
+  TQuizType,
   TWord,
 } from "@data";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -19,8 +20,6 @@ import audioCorrect from "../assets/audio/correct.mp4";
 import audioIncorrect from "../assets/audio/incorrect.mp4";
 import { Link } from "@tanstack/react-router";
 import { StopwatchImperativeHandle } from "src/components/Stopwatch";
-
-type TQuizType = "n5" | "n5Bookmark" | "hiragana" | "katakana";
 
 const audioCorrectAnswer = new Audio(audioCorrect);
 const audioIncorrectAnswer = new Audio(audioIncorrect);
@@ -116,23 +115,29 @@ const QuizView = ({
 };
 
 const QuizCompletedView = ({
+  quizType,
   correctAnswers,
   onRetry,
   timeTakenArray,
+  totalQuestion
 }: {
+  quizType: TQuizType;
   correctAnswers: number;
   onRetry: () => void;
   timeTakenArray: number[];
+  totalQuestion: number;
 }) => {
   const scoreboard: ScoreboardItem = useMemo(
     () => ({
+      quizType,
       createdAt: new Date().toISOString(),
       correctAnswers,
       totalTimeTaken: timeTakenArray.reduce((acc, curr) => acc + curr, 0),
       longestTimeToAnswer: Math.max(...timeTakenArray),
       shortestTimeToAnswer: Math.min(...timeTakenArray),
+      totalQuestion
     }),
-    [correctAnswers, timeTakenArray]
+    [correctAnswers, quizType, timeTakenArray, totalQuestion]
   );
 
   const statistics = [
@@ -289,6 +294,8 @@ export function QuizPage({
     if (questionIndex >= totalQuestions) {
       return (
         <QuizCompletedView
+          quizType={quizType}
+          totalQuestion={totalQuestions}
           correctAnswers={correctAnswers}
           onRetry={onRetry}
           timeTakenArray={timeTakenArray.current}

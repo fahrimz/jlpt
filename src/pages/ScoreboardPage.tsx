@@ -21,10 +21,11 @@ export const ScoreboardPage = () => {
         <thead>
           <tr>
             <th className="border p-4">Time</th>
+            <th className="border p-4">Quiz Type</th>
             <th className="border p-4">Correct Answers</th>
-            <th className="border p-4">Total Time Taken (s)</th>
-            <th className="border p-4">Longest Time to Answer (s)</th>
-            <th className="border p-4">Shortest Time to Answer (s)</th>
+            <th className="border p-4">Total Time Taken</th>
+            <th className="border p-4">Longest Time to Answer</th>
+            <th className="border p-4">Shortest Time to Answer</th>
           </tr>
         </thead>
         <tbody>
@@ -34,10 +35,11 @@ export const ScoreboardPage = () => {
                 <td className="border p-4">
                   {new Date(item.createdAt).toLocaleString()}
                 </td>
-                <td className="border p-4">{item.correctAnswers}</td>
-                <td className="border p-4">{item.totalTimeTaken}</td>
-                <td className="border p-4">{item.longestTimeToAnswer}</td>
-                <td className="border p-4">{item.shortestTimeToAnswer}</td>
+                <td className="border p-4">{item.quizType}</td>
+                <td className="border p-4">{item.correctAnswers} {item.totalQuestion > 0 && `/ ${item.totalQuestion.toString()}`}</td>
+                <td className="border p-4">{item.totalTimeTaken} second</td>
+                <td className="border p-4">{item.longestTimeToAnswer} second</td>
+                <td className="border p-4">{item.shortestTimeToAnswer} second</td>
               </tr>
             ))
           ) : (
