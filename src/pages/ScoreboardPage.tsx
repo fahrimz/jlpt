@@ -1,3 +1,4 @@
+import { Header } from "@components";
 import { ScoreboardItem } from "@data";
 import { Storage } from "@utility";
 import { useEffect, useState } from "react";
@@ -17,8 +18,8 @@ export const ScoreboardPage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-12">
-      <h1>Scoreboard</h1>
+    <div className="flex flex-col">
+      <Header title='Scoreboard' />
 
       <table className="table-auto">
         <thead>

@@ -27,7 +27,6 @@ interface QuizPageProps {
   preferredTotalQuestions: number;
   questionBank: TWord[];
   answerBank: TWord[];
-  title: string;
 }
 
 export function QuizPage({
@@ -35,7 +34,6 @@ export function QuizPage({
   preferredTotalQuestions = Constants.defaultTotalQuestion,
   questionBank,
   answerBank,
-  title
 }: QuizPageProps) {
   const totalQuestions = Math.min(preferredTotalQuestions, questionBank.length);
   const questions = useMemo(
@@ -144,13 +142,10 @@ export function QuizPage({
 
   return (
     <>
-      <div className="flex flex-col gap-32 ">
-        <div className="flex gap-2 justify-center">
-          <Link to="/">
-            <h1 className="font-bold text-xl">{title}</h1>
-          </Link>
-        </div>
+      <div className="flex flex-col gap-32">
+        <hr />
         {renderBody()}
+        <hr />
       </div>
       <ToastContainer
         position="bottom-center"
